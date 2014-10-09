@@ -1,0 +1,52 @@
+汇编代码：
+
+	org 07c00h
+	mov ax,cs
+	mov ds,ax
+	mov es,ax
+	call dispstr
+	jmp $
+dispstr:
+	mov ax,bootmessage
+	mov bp,ax
+	mov cx,16
+	mov ax,01301h
+	mov bx,000ch
+	mov dl,0
+	int 10h
+	ret
+bootmessage: db "hello,2014!"
+	times 510-($-$$) db 0
+	dw 0xaa55
+
+一.
+
+新建记事本，重命名boot.txt。
+打上这段代码，然后将其格式更改成boot.asm。
+（如果改不了，有可能是隐藏了文件类型的扩展名，打开计算机-->组织-->文件夹和搜索选项-->查看-->去掉隐藏已知文件类型的扩展名）
+
+二.
+
+下载nasm，找到存放boot.asm的磁盘，
+用nasm编译一下：
+nasm boot.asm -o boot.bin
+生成了boot.bin文件
+
+三.
+
+下载 FloppyWriter.exe(网上有下载），
+将将bin文件写入镜像文件Tinix.img中.
+然后启动文件挂载到虚拟软盘中，就实现了自己的名义上的第一个操作系统----Hello, 2014!
+
+四.
+
+下载vmwar，安装后创建新的虚拟机
+典型-->稍后安装操作系统-->客户机操作系统勾选其他，版本勾选其他-->自由命名与位置-->将虚拟磁盘拆分多个文件-->自定义硬件
+-->添加软盘驱动器-->使用物理软盘驱动器-->软盘驱动设置中选择软盘映像文件--Tinix.img。
+
+五.
+开启此虚拟机.即显示 hello 2014。
+
+
+
+
